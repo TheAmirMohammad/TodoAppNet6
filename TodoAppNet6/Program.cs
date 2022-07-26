@@ -11,7 +11,7 @@ builder.Services.ConfigureAuthentication();
 builder.Services.ConfigureJWT(builder.Configuration);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.ConfigureSwaggerGen();
 
 var app = builder.Build();
 
