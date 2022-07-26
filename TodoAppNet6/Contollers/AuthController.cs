@@ -25,6 +25,14 @@ namespace TodoAppNet6.Controllers
             _userManager = userManager;
         }
 
-        
+        [HttpGet("me"), Authorize]
+        public ActionResult<string> getMe()
+        {
+            var user = User.Identity?.Name;
+            return Ok(new
+            {
+                username = user
+            });
+        }
     }
 }
