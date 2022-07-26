@@ -60,6 +60,20 @@ namespace TodoAppNet6.Controllers
             return user;
         }
 
-        
+        [HttpPost("addRole")]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult<IdentityRole>> addRole(IdentityRole request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest("Check your data!");
+
+            await _context.Roles.AddAsync(request);
+            await _context.SaveChangesAsync();
+
+            string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            return request;
+        }
+
     }
 }
