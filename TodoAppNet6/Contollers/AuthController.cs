@@ -102,5 +102,17 @@ namespace TodoAppNet6.Controllers
             await _context.SaveChangesAsync();
             return request;
         }
+
+        [HttpPost("unassignRole")]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult<string>> UnassignRole(IdentityUserRole<string> request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            _context.UserRoles.Remove(request);
+            await _context.SaveChangesAsync();
+            return Ok("Role removd!");
+        }
     }
 }
