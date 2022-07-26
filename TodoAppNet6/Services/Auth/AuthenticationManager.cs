@@ -51,7 +51,7 @@ namespace TodoAppNet6.Servises.Auth
         {
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Name, _user.UserName)
+                new Claim(ClaimTypes.Name, _user!.UserName)
             };
 
             var roles = await _userManager.GetRolesAsync(_user);

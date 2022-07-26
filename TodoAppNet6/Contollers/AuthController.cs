@@ -50,7 +50,7 @@ namespace TodoAppNet6.Controllers
                 UserName = request.Username,
                 NormalizedUserName = request.Username.ToUpper(),
                 Email = request.Email,
-                NormalizedEmail = request.Email.ToUpper(),
+                NormalizedEmail = request.Email?.ToUpper(),
                 PhoneNumber = request.PhoneNumber,
                 Birthdate = request.Birthdate,
             };
