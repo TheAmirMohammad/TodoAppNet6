@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TodoAppNet6.Data;
 using TodoAppNet6.Models.Auth;
+using TodoAppNet6.Services.UserProp;
 using TodoAppNet6.Servises.Auth;
 
 namespace TodoAppNet6.Controllers
@@ -15,20 +16,23 @@ namespace TodoAppNet6.Controllers
         private readonly TodoContext _context;
         private readonly IAuthenticationManager _authenticationManager;
         private readonly UserManager<User> _userManager;
+        private readonly IUserInterface _userInterface;
 
         public AuthController(TodoContext context,
                               IAuthenticationManager authenticationManager,
-                              UserManager<User> userManager)
+                              UserManager<User> userManager,
+                              IUserInterface userInterface)
         {
             _context = context;
             _authenticationManager = authenticationManager;
             _userManager = userManager;
+            _userInterface = userInterface;
         }
 
         [HttpGet("me"), Authorize]
         public ActionResult<string> getMe()
         {
-            var user = User.Identity?.Name;
+            var user = _userInterface.GetName();
             return Ok(new
             {
                 username = user
