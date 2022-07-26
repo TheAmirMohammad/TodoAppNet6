@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TodoAppNet6.Data;
 using TodoAppNet6.Models.Auth;
+using TodoAppNet6.Servises.Auth;
 
 namespace TodoAppNet6.Services
 {
@@ -25,6 +26,11 @@ namespace TodoAppNet6.Services
         {
             services.AddDbContext<TodoContext>(
                 o => o.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+        }
+
+        public static void ConfigureServices(this IServiceCollection services)
+        {
+            services.AddTransient<IAuthenticationManager, AuthenticationManager>();
         }
     }
 }
