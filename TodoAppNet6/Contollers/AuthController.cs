@@ -75,5 +75,16 @@ namespace TodoAppNet6.Controllers
             return request;
         }
 
+        [HttpPost("assignRole")]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult<IdentityUserRole<string>>> AssignRole(IdentityUserRole<string> request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            await _context.UserRoles.AddAsync(request);
+            await _context.SaveChangesAsync();
+            return request;
+        }
     }
 }
