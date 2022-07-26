@@ -60,6 +60,17 @@ namespace TodoAppNet6.Controllers
             return user;
         }
 
+        [HttpPost("login")]
+        public async Task<ActionResult<string>> Login(UserCreds request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest("Check your data!");
+
+            return !await _authenticationManager.ValidateCreds(request)
+                ? Unauthorized("Check your credentials!")
+                : Ok(new { token = await _authenticationManager.CreateToken() });
+        }
+
         [HttpPost("addRole")]
         [Authorize(Roles = "admin")]
         public async Task<ActionResult<IdentityRole>> addRole(IdentityRole request)
