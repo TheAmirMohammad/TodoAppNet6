@@ -34,5 +34,32 @@ namespace TodoAppNet6.Controllers
                 username = user
             });
         }
+
+        [HttpPost("register")]
+        public async Task<ActionResult<User>> Register(UserDto request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest("Check your data!");
+
+            var ph = new PasswordHasher<User>();
+            var user = new User
+            {
+                Id = Guid.NewGuid().ToString(),
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                UserName = request.Username,
+                NormalizedUserName = request.Username.ToUpper(),
+                Email = request.Email,
+                NormalizedEmail = request.Email.ToUpper(),
+                PhoneNumber = request.PhoneNumber,
+                Birthdate = request.Birthdate,
+            };
+            user.PasswordHash = ph.HashPassword(user, request.Password);
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
+
+        
     }
 }
