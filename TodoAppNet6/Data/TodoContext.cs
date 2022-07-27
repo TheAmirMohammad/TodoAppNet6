@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TodoAppNet6.Models.Auth;
+using TodoAppNet6.Models.TodoItem;
 
 namespace TodoAppNet6.Data
 {
@@ -20,5 +21,8 @@ namespace TodoAppNet6.Data
                 .HasIndex(u => u.UserName)
                 .IsUnique();
         }
+
+        public DbSet<Todo>? Todo { get; set; }
+
     }
 }
