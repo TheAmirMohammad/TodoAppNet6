@@ -32,10 +32,12 @@ namespace TodoAppNet6.Controllers
         [HttpGet("me"), Authorize]
         public ActionResult<string> getMe()
         {
-            var user = _userInterface.GetName();
+            var username = _userInterface.GetName();
+            var userId = _userInterface.GetId();
             return Ok(new
             {
-                username = user
+                username = username,
+                userId = userId
             });
         }
 
