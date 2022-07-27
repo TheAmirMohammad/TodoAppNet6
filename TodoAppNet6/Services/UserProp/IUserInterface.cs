@@ -6,6 +6,7 @@ namespace TodoAppNet6.Services.UserProp
     {
         string? GetName();
         string? GetId();
-        Task<User?> GetUser();
+        User? GetUser();
+        User? GetUserById(string id);
     }
 }
