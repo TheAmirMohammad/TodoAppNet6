@@ -9,6 +9,7 @@ builder.Services.ConfigureServices();
 builder.Services.ConfigureDatabase(builder.Configuration);
 builder.Services.ConfigureAuthentication();
 builder.Services.ConfigureJWT(builder.Configuration);
+builder.Services.AddHttpContextAccessor();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureSwaggerGen();

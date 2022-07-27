@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TodoAppNet6.Data;
 using TodoAppNet6.Models.Auth;
+using TodoAppNet6.Services.UserProp;
 using TodoAppNet6.Servises.Auth;
 
 namespace TodoAppNet6.Controllers
@@ -15,20 +16,23 @@ namespace TodoAppNet6.Controllers
         private readonly TodoContext _context;
         private readonly IAuthenticationManager _authenticationManager;
         private readonly UserManager<User> _userManager;
+        private readonly IUserInterface _userInterface;
 
         public AuthController(TodoContext context,
                               IAuthenticationManager authenticationManager,
-                              UserManager<User> userManager)
+                              UserManager<User> userManager,
+                              IUserInterface userInterface)
         {
             _context = context;
             _authenticationManager = authenticationManager;
             _userManager = userManager;
+            _userInterface = userInterface;
         }
 
         [HttpGet("me"), Authorize]
         public ActionResult<string> getMe()
         {
-            var user = User.Identity?.Name;
+            var user = _userInterface.GetName();
             return Ok(new
             {
                 username = user
@@ -50,7 +54,7 @@ namespace TodoAppNet6.Controllers
                 UserName = request.Username,
                 NormalizedUserName = request.Username.ToUpper(),
                 Email = request.Email,
-                NormalizedEmail = request.Email.ToUpper(),
+                NormalizedEmail = request.Email?.ToUpper(),
                 PhoneNumber = request.PhoneNumber,
                 Birthdate = request.Birthdate,
             };
@@ -73,17 +77,22 @@ namespace TodoAppNet6.Controllers
 
         [HttpPost("addRole")]
         [Authorize(Roles = "admin")]
-        public async Task<ActionResult<IdentityRole>> addRole(IdentityRole request)
+        public async Task<ActionResult<IdentityRole>> addRole(RoleDto request)
         {
             if (!ModelState.IsValid)
                 return BadRequest("Check your data!");
 
-            await _context.Roles.AddAsync(request);
+            var role = new IdentityRole
+            {
+                Id = request.Name.Trim() + "_role",
+                Name = request.Name,
+                NormalizedName = request.Name.ToUpper()
+            };
+
+            await _context.Roles.AddAsync(role);
             await _context.SaveChangesAsync();
 
-            string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            return request;
+            return role;
         }
 
         [HttpPost("assignRole")]
@@ -96,6 +105,18 @@ namespace TodoAppNet6.Controllers
             await _context.UserRoles.AddAsync(request);
             await _context.SaveChangesAsync();
             return request;
+        }
+
+        [HttpPost("unassignRole")]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult<string>> UnassignRole(IdentityUserRole<string> request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            _context.UserRoles.Remove(request);
+            await _context.SaveChangesAsync();
+            return Ok("Role removd!");
         }
     }
 }

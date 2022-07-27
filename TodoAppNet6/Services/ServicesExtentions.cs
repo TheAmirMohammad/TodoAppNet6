@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using TodoAppNet6.Data;
 using TodoAppNet6.Models.Auth;
+using TodoAppNet6.Services.UserProp;
 using TodoAppNet6.Servises.Auth;
 
 namespace TodoAppNet6.Services
@@ -35,6 +36,7 @@ namespace TodoAppNet6.Services
         public static void ConfigureServices(this IServiceCollection services)
         {
             services.AddTransient<IAuthenticationManager, AuthenticationManager>();
+            services.AddScoped<IUserInterface, UserService>();
         }
 
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
