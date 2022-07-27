@@ -21,6 +21,14 @@ namespace TodoAppNet6.Services.UserProp
                 return null;
             return context.User.FindFirst(ClaimTypes.Name)!.Value;
         }
+        
+        public string? GetId()
+        {
+            var context = _httpContext.HttpContext;
+            if (context == null)
+                return null;
+            return context.User.FindFirst(ClaimTypes.PrimarySid)!.Value;
+        }
 
         public async Task<User?> GetUser()
         {
