@@ -51,6 +51,7 @@ namespace TodoAppNet6.Servises.Auth
         {
             var claims = new List<Claim>()
             {
+                new Claim(ClaimTypes.PrimarySid, _user!.Id),
                 new Claim(ClaimTypes.Name, _user!.UserName)
             };
 
