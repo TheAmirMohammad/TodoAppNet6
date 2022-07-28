@@ -34,6 +34,21 @@ namespace TodoAppNet6.Contollers
             return await _context.Todo.ToListAsync();
         }
 
+        [HttpGet("mine")]
+        [Authorize]
+        public async Task<ActionResult<List<Todo>>> GetUsersTodoes()
+        {
+            if (_context.Todo == null)
+                return NotFound();
+
+            var userId = _userService.GetId();
+            var todoes = await _context.Todo
+                               .Where(t => t.UserId == userId)
+                               .ToListAsync();
+
+            return todoes;
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Todo>> GetTodo(Guid id)
         {
