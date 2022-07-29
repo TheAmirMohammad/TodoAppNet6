@@ -26,6 +26,7 @@ namespace TodoAppNet6.Contollers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<Todo>>> GetTodo()
         {
             if (_context.Todo == null)
@@ -50,6 +51,7 @@ namespace TodoAppNet6.Contollers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Todo>> GetTodo(Guid id)
         {
             if (_context.Todo == null)
@@ -126,6 +128,7 @@ namespace TodoAppNet6.Contollers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteTodo(Guid id)
         {
             if (_context.Todo == null)
