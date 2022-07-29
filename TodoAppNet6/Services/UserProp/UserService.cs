@@ -30,12 +30,18 @@ namespace TodoAppNet6.Services.UserProp
             return context.User.FindFirst(ClaimTypes.PrimarySid)!.Value;
         }
 
-        public async Task<User?> GetUser()
+        public User? GetUser()
         {
             var username = GetName();
             if (username == null)
                 return null;
-            var user = await _userManager.FindByNameAsync(username);
+            var user = _userManager.FindByNameAsync(username).Result;
+            return user;
+        }
+
+        public User? GetUserById(string id)
+        {
+            var user = _userManager.FindByIdAsync(id).Result;
             return user;
         }
     }
