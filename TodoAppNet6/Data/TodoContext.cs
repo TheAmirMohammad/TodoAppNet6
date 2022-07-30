@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TodoAppNet6.Models.Auth;
 using TodoAppNet6.Models.TodoItem;
+using TodoAppNet6.Models.Folders;
 
 namespace TodoAppNet6.Data
 {
@@ -23,6 +24,8 @@ namespace TodoAppNet6.Data
         }
 
         public DbSet<Todo>? Todo { get; set; }
+
+        public DbSet<Folder>? Folder { get; set; }
 
     }
 }
