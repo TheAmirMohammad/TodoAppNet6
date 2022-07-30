@@ -37,6 +37,22 @@ namespace TodoAppNet6.Contollers
             return await _context.Folder.ToListAsync();
         }
 
+        [HttpGet("inside/{id}")]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<Todo>>> GetFoldersTodoes(Guid id)
+        {
+            if (_context.Todo == null)
+                return NotFound();
+
+            if (!FolderExists(id))
+                return NotFound("No such a folder");
+
+            var todoes = await _context.Todo
+                                .Where(t => t.FolderId == id)
+                                .ToListAsync();
+
+            return todoes;
+        }
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<Folder>> GetFolder(Guid id)
