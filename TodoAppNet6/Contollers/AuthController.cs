@@ -16,12 +16,12 @@ namespace TodoAppNet6.Controllers
         private readonly TodoContext _context;
         private readonly IAuthenticationManager _authenticationManager;
         private readonly UserManager<User> _userManager;
-        private readonly IUserInterface _userInterface;
+        private readonly IUserService _userInterface;
 
         public AuthController(TodoContext context,
                               IAuthenticationManager authenticationManager,
                               UserManager<User> userManager,
-                              IUserInterface userInterface)
+                              IUserService userInterface)
         {
             _context = context;
             _authenticationManager = authenticationManager;

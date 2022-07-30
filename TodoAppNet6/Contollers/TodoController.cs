@@ -12,20 +12,21 @@ using TodoAppNet6.Services.UserProp;
 
 namespace TodoAppNet6.Contollers
 {
-    [Route("api/[controller]")]
+    [Route("api/todo")]
     [ApiController]
     public class TodoController : ControllerBase
     {
         private readonly TodoContext _context;
-        private readonly IUserInterface _userService;
+        private readonly IUserService _userService;
 
-        public TodoController(TodoContext context, IUserInterface userService)
+        public TodoController(TodoContext context, IUserService userService)
         {
             _context = context;
             _userService = userService;
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<Todo>>> GetTodo()
         {
             if (_context.Todo == null)
@@ -34,7 +35,23 @@ namespace TodoAppNet6.Contollers
             return await _context.Todo.ToListAsync();
         }
 
+        [HttpGet("mine")]
+        [Authorize]
+        public async Task<ActionResult<List<Todo>>> GetUsersTodoes()
+        {
+            if (_context.Todo == null)
+                return NotFound();
+
+            var userId = _userService.GetId();
+            var todoes = await _context.Todo
+                               .Where(t => t.UserId == userId)
+                               .ToListAsync();
+
+            return todoes;
+        }
+
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Todo>> GetTodo(Guid id)
         {
             if (_context.Todo == null)
@@ -59,6 +76,10 @@ namespace TodoAppNet6.Contollers
             todo!.Title = request.Title;
             todo!.Description = request.Description;
             todo!.IsDone = request.IsDone;
+            if (request.FolderId != null)
+                todo!.FolderId = request.FolderId;
+            if (request.UserId != null)
+                todo!.UserId = request.UserId;
 
             _context.Entry(todo).State = EntityState.Modified;
 
@@ -111,6 +132,7 @@ namespace TodoAppNet6.Contollers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteTodo(Guid id)
         {
             if (_context.Todo == null)

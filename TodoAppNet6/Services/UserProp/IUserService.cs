@@ -2,7 +2,7 @@
 
 namespace TodoAppNet6.Services.UserProp
 {
-    public interface IUserInterface
+    public interface IUserService
     {
         string? GetName();
         string? GetId();

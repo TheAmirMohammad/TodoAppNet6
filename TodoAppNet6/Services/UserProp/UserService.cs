@@ -4,7 +4,7 @@ using TodoAppNet6.Models.Auth;
 
 namespace TodoAppNet6.Services.UserProp
 {
-    public class UserService : IUserInterface
+    public class UserService : IUserService
     {
         private readonly IHttpContextAccessor _httpContext;
         private readonly UserManager<User> _userManager;
