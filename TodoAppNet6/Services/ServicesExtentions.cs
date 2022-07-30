@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 using TodoAppNet6.Data;
 using TodoAppNet6.Models.Auth;
@@ -77,7 +76,20 @@ namespace TodoAppNet6.Services
                     BearerFormat = "JWT",
                     Scheme = "Bearer"
                 });
-                option.OperationFilter<SecurityRequirementsOperationFilter>();
+                option.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type=ReferenceType.SecurityScheme,
+                                Id="Bearer"
+                            }
+                        },
+                        new string[]{}
+                    }
+                });
             });
         }
     }
