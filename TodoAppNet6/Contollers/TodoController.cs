@@ -12,7 +12,7 @@ using TodoAppNet6.Services.UserProp;
 
 namespace TodoAppNet6.Contollers
 {
-    [Route("api/[controller]")]
+    [Route("api/todo")]
     [ApiController]
     public class TodoController : ControllerBase
     {
@@ -76,6 +76,10 @@ namespace TodoAppNet6.Contollers
             todo!.Title = request.Title;
             todo!.Description = request.Description;
             todo!.IsDone = request.IsDone;
+            if (request.FolderId != null)
+                todo!.FolderId = request.FolderId;
+            if (request.UserId != null)
+                todo!.UserId = request.UserId;
 
             _context.Entry(todo).State = EntityState.Modified;
 
