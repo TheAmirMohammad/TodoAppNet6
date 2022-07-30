@@ -17,9 +17,9 @@ namespace TodoAppNet6.Contollers
     public class TodoController : ControllerBase
     {
         private readonly TodoContext _context;
-        private readonly IUserInterface _userService;
+        private readonly IUserService _userService;
 
-        public TodoController(TodoContext context, IUserInterface userService)
+        public TodoController(TodoContext context, IUserService userService)
         {
             _context = context;
             _userService = userService;

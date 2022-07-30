@@ -37,7 +37,7 @@ namespace TodoAppNet6.Services
         public static void ConfigureServices(this IServiceCollection services)
         {
             services.AddTransient<IAuthenticationManager, AuthenticationManager>();
-            services.AddScoped<IUserInterface, UserService>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
