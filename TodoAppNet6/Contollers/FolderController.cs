@@ -53,6 +53,22 @@ namespace TodoAppNet6.Contollers
 
             return todoes;
         }
+
+        [HttpGet("mine")]
+        [Authorize]
+        public async Task<ActionResult<List<Folder>>> GetUsersTodoes()
+        {
+            if (_context.Todo == null)
+                return NotFound();
+
+            var userId = _userService.GetId();
+            var folders = await _context.Folder!
+                               .Where(t => t.UserId == userId)
+                               .ToListAsync();
+
+            return folders;
+        }
+
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<Folder>> GetFolder(Guid id)
